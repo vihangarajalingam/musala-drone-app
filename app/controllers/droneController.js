@@ -1,5 +1,6 @@
 import droneMapper from "../mappers/droneMapper.js";
-import constants from "../config/constants/constants.js";
+import medicationMapper from "../mappers/medicationMapper.js";
+import Medications from "../models/medicationModel.js";
 
 // Validate and insert a drone
 const create = async (req, res) => {
@@ -20,6 +21,29 @@ const create = async (req, res) => {
     }
 };
 
+const load = async (req, res) => {
+    const { body } = req;
+    if (!(Array.isArray(body.medications) && body.medications.length > 0)) {
+        res.status(400).send({ message: 'Medications array should have at least 1 medicine code' });
+    }
+    const { medications } = body;
+    let totalWeight = 0;
+    for (const medication of medications) {
+        const medicationFromDB = await medicationMapper.getMedicationByCode(medication);
+        if (!(medicationFromDB.length > 0)) {
+            res.status(400).send({ message: 'Invalid medication code' });
+        }
+        totalWeight += medicationFromDB[0]['dataValues']['weight'];
+    }
+    console.log(totalWeight);
+    if (totalWeight <= 500) {
+        res.status(200).send();
+    } else {
+        res.status(400).send({ message: 'Total weight of medications exceeds drone max weight limit' });
+    }
+};
+
 export default {
-    create
+    create,
+    load
 };
