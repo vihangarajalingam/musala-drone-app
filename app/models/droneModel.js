@@ -5,7 +5,7 @@ import constants from '../config/constants/constants.js';
 // Define drone model with validations
 const Drones = sequelizeCC.define('drones', {
     serialNumber: {
-        type: DataTypes.INTEGER(100), allowNull: false,
+        type: DataTypes.INTEGER(100), allowNull: false, unique: true,
         validate: {
             isInt: { msg: 'Serial number should be an integer' },
             len: { args: [1, 100], msg: 'Serial number should have a max length of 100 chars' },
