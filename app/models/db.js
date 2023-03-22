@@ -1,17 +1,17 @@
-import { createConnection } from "mysql";
+import Sequelize from "sequelize";
 import { HOST, USER, PASSWORD, DB, PORT } from "../config/db.config.js";
 
-const connection = createConnection({
+const sequelizeCC = new Sequelize(DB, USER, PASSWORD, {
   host: HOST,
-  user: USER,
-  password: PASSWORD,
-  database: DB,
-  port: PORT
+  port: PORT,
+  dialect: 'mysql'
 });
 
-connection.connect(error => {
-  if (error) throw error;
-  console.log("Successfully connected to the database.");
-});
+try {
+  await sequelizeCC.authenticate();
+  console.log('Connection has been established successfully.');
+} catch (error) {
+  console.error('Unable to connect to the database:', error);
+}
 
-export default connection;
+export default sequelizeCC;
