@@ -1,7 +1,9 @@
 import express, { json, urlencoded } from "express";
 import cors from "cors";
+import cron from 'node-cron';
 import routes from './app/routes/routes.js';
 import init from "./app/dbInitialize.js";
+import droneController from "./app/controllers/droneController.js";
 
 const app = express();
 
@@ -25,6 +27,10 @@ app.get("/", (req, res) => {
 app.use("/api", routes);
 
 await init(); // Insert fake data to DB
+
+cron.schedule('*/1 * * * *', async () => { // Get battery level of drones every minute
+  await droneController.getBatteryLevelOfAllDrones();
+});
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
