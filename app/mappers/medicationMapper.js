@@ -1,8 +1,11 @@
 import Medications from "../models/medicationModel.js";
 
-// Get Medication by ID
-const getMedicationByID = async (id) => {
+const getMedicationByCode = async (code) => {
     return await Medications.findAll({
-        where:{ id: id }
+        where:{ code: code }
     })
+}
+
+export default {
+    getMedicationByCode
 }

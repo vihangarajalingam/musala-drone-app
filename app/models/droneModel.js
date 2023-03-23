@@ -1,9 +1,9 @@
 import { DataTypes } from 'sequelize';
-import sequelizeCC from './db.js';
+import sequelizeCon from './db.connection.js';
 import constants from '../config/constants/constants.js';
 
 // Define drone model with validations
-const Drones = sequelizeCC.define('drones', {
+const Drones = sequelizeCon.define('drones', {
     serialNumber: {
         type: DataTypes.INTEGER(100), allowNull: false, unique: true,
         validate: {
@@ -33,9 +33,9 @@ const Drones = sequelizeCC.define('drones', {
     },
     state: {
         type: DataTypes.STRING(20), allowNull: false,
-        validate: { 
+        validate: {
             isIn: { args: [`${constants.droneStates}`], msg: `Invalid drone state. Allowed drone states are: ${constants.droneStates}` }
-         }
+        }
     }
 });
 

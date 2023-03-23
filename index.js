@@ -1,6 +1,7 @@
 import express, { json, urlencoded } from "express";
 import cors from "cors";
 import routes from './app/routes/routes.js';
+import init from "./app/dbInitialize.js";
 
 const app = express();
 
@@ -22,6 +23,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api", routes);
+
+await init(); // Insert fake data to DB
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
