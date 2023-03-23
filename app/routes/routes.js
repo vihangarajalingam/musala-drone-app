@@ -5,5 +5,6 @@ var router = express.Router();
 
 router.post('/drone/create', droneController.create);
 router.post('/drone/load', droneController.load);
+router.get('/drone/get-load', droneController.getLoadedMedication);
 
 export default router;
