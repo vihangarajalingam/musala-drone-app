@@ -26,6 +26,8 @@
     "sequelize": "^6.29.3"
   },
   "devDependencies": {
+    "@babel/core": "^7.21.3",
+    "@babel/node": "^7.20.7",
     "@babel/preset-env": "^7.20.2",
     "@faker-js/faker": "^7.6.0",
     "nodemon": "^2.0.21"

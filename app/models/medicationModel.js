@@ -1,8 +1,8 @@
 import { DataTypes } from 'sequelize';
-import sequelizeCC from './db.js';
+import sequelizeCon from './db.connection.js';
 
 // Define medicine model with validations
-const Medications = sequelizeCC.define('medications', {
+const Medications = sequelizeCon.define('medications', {
     name: {
         type: DataTypes.STRING, allowNull: false,
         validate: {
