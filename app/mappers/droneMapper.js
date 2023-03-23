@@ -1,3 +1,4 @@
+import constants from "../config/constants/constants.js";
 import Drones from "../models/droneModel.js";
 
 // Insert a new drone
@@ -17,8 +18,15 @@ const getDroneByID = async (droneID) => {
     });
 };
 
+const getIdleDrones = async () => {
+    return await Drones.findAll({
+        where: { state: constants.droneStates[0] }
+    });
+};
+
 export default {
     create,
     setDroneState,
-    getDroneByID
+    getDroneByID,
+    getIdleDrones
 };

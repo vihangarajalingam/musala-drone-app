@@ -96,13 +96,18 @@ const getLoadedMedication = async (req, res) => {
     }
     if (valid) {
         const droneMedications = await droneMedicationsMapper.getLoadedMedications(droneFromDB.id);
-        // const medicationFromDB = await medicationMapper.getMedicationByCode(droneMedications[0]['dataValues']['code']);
         return res.status(200).send({ droneMedications });
     }
+};
+
+const getAvailableDrones = async (req, res) => {
+    const drones = await droneMapper.getIdleDrones();
+    return res.status(200).send({ drones });
 };
 
 export default {
     create,
     load,
-    getLoadedMedication
+    getLoadedMedication,
+    getAvailableDrones
 };
