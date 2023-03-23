@@ -8,6 +8,8 @@ import constants from './config/constants/constants.js';
 const init = async () => {
     try {
         await sequelizeCon.sync({ force: true });
+        Drones.belongsToMany(Medications, { through: DroneMedications, foreignKey: 'droneID' });
+        Medications.belongsToMany(Drones, { through: DroneMedications, foreignKey: 'medicationID' });
         // seed
         for (let i = 0; i < 20; i += 1) {
             const drone = await Drones.create({
@@ -23,8 +25,7 @@ const init = async () => {
                 code: faker.random.alpha({ count: 5, casing: 'upper' }),
                 image: faker.image.dataUri()
             });
-            if ((drone.state === constants.droneStates[1] || drone.state === constants.droneStates[2] || drone.state === constants.droneStates[3])
-                && medication.weight < drone.weightLimit) {
+            if (drone.state === constants.droneStates[1] || drone.state === constants.droneStates[2] || drone.state === constants.droneStates[3]) {
                 await DroneMedications.create({ droneID: drone.id, medicationID: medication.id });
             }
         }

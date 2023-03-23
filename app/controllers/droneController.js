@@ -77,7 +77,32 @@ const load = async (req, res) => {
     }
 };
 
+const getLoadedMedication = async (req, res) => {
+    const droneID = req.query.droneID;
+    let valid = true;
+    if (!droneID) {
+        valid = false;
+        res.status(400).send({ message: 'Drone ID is mandatory' });
+    }
+    const drone = await droneMapper.getDroneByID(droneID);
+    if (drone.length <= 0) {
+        valid = false;
+        res.status(400).send({ message: 'Invalid drone ID' });
+    }
+    const droneFromDB = drone[0]['dataValues'];
+    if (droneFromDB.state !== constants.droneStates[2]) { // Check if drone is not in loaded state
+        valid = false;
+        res.status(400).send({ message: 'Drone is not in LOADED state' });
+    }
+    if (valid) {
+        const droneMedications = await droneMedicationsMapper.getLoadedMedications(droneFromDB.id);
+        // const medicationFromDB = await medicationMapper.getMedicationByCode(droneMedications[0]['dataValues']['code']);
+        return res.status(200).send({ droneMedications });
+    }
+};
+
 export default {
     create,
-    load
+    load,
+    getLoadedMedication
 };
