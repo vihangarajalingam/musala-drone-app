@@ -105,9 +105,34 @@ const getAvailableDrones = async (req, res) => {
     return res.status(200).send({ drones });
 };
 
+const getBatteryLevelOfDrone = async (req, res) => {
+    const droneID = req.query.droneID;
+    let valid = true;
+    if (!droneID) {
+        valid = false;
+        res.status(400).send({ message: 'Drone ID is mandatory' });
+    }
+    const drone = await droneMapper.getDroneByID(droneID);
+    if (drone.length <= 0) {
+        valid = false;
+        res.status(400).send({ message: 'Invalid drone ID' });
+    }
+    const droneFromDB = drone[0]['dataValues'];
+    return res.status(200).send({ batteryLevel: `${droneFromDB.batteryCapacity}%` });
+}
+
+const getBatteryLevelOfAllDrones = async () => {
+    const drones = await droneMapper.getDrones();
+    for(const drone of drones){
+        console.log(`Serial Number: ${drone.serialNumber}, Battery Level: ${drone.batteryCapacity}`);
+    }
+}
+
 export default {
     create,
     load,
     getLoadedMedication,
-    getAvailableDrones
+    getAvailableDrones,
+    getBatteryLevelOfDrone,
+    getBatteryLevelOfAllDrones
 };

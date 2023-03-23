@@ -24,9 +24,14 @@ const getIdleDrones = async () => {
     });
 };
 
+const getDrones = async () => {
+    return await Drones.findAll();
+}
+
 export default {
     create,
     setDroneState,
     getDroneByID,
-    getIdleDrones
+    getIdleDrones,
+    getDrones
 };
