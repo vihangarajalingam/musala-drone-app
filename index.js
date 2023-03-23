@@ -24,7 +24,7 @@ app.get("/", (req, res) => {
 
 app.use("/api", routes);
 
-await init();
+await init(); // Insert fake data to DB
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

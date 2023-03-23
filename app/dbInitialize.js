@@ -23,6 +23,10 @@ const init = async () => {
                 code: faker.random.alpha({ count: 5, casing: 'upper' }),
                 image: faker.image.dataUri()
             });
+            if ((drone.state === constants.droneStates[1] || drone.state === constants.droneStates[2] || drone.state === constants.droneStates[3])
+                && medication.weight < drone.weightLimit) {
+                await DroneMedications.create({ droneID: drone.id, medicationID: medication.id });
+            }
         }
     } catch (error) {
         console.log(error);
